@@ -13,7 +13,7 @@ import ContainerEstimator from "@/components/ContainerEstimator";
 import ContactSection from "@/components/ContactSection";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import AiChatWidget from "@/components/AiChatWidget";
 
 export default function Home() {
   const [specsModalOpen, setSpecsModalOpen] = useState(false);
@@ -83,7 +83,7 @@ export default function Home() {
       <Footer />
 
       {/* Floating Instant Communication Widget */}
-      <FloatingWhatsApp />
+      <AiChatWidget />
 
       {/* Technical Specifications Modal */}
       <ProductSpecsModal
