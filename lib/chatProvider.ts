@@ -298,10 +298,10 @@ export class GroqChatProvider extends OpenAiCompatibleChatProvider {
   constructor(options?: ProviderOptions) {
     super({
       apiKey: options?.apiKey ?? process.env.GROQ_API_KEY ?? "",
-      model: options?.model ?? process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile",
+      model: options?.model ?? process.env.GROQ_MODEL ?? "openai/gpt-oss-120b",
       baseURL: "https://api.groq.com/openai/v1",
       providerName: "Groq",
-      defaultModel: "llama-3.3-70b-versatile",
+      defaultModel: "openai/gpt-oss-120b",
       timeoutMs: options?.timeoutMs ?? 20000,
     });
   }
