@@ -111,7 +111,7 @@ export class GeminiChatProvider implements ChatProvider {
 
   constructor(options?: GeminiProviderOptions) {
     this.apiKey = options?.apiKey ?? process.env.GEMINI_API_KEY ?? "";
-    this.model = options?.model ?? process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+    this.model = options?.model ?? process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
     this.timeoutMs = options?.timeoutMs ?? 20000;
   }
 

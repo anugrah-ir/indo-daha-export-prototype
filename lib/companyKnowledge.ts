@@ -130,7 +130,7 @@ export interface WhatsAppAction {
 }
 
 /**
- * System instruction tailored for Google Gemini Free Tier models (gemini-2.5-flash / gemini-1.5-flash)
+ * System instruction tailored for Google Gemini Free Tier models (gemini-3.8-flash / gemini-1.5-flash)
  */
 export const SYSTEM_INSTRUCTION = `You are the official 24/7 Senior AI Export Desk Representative of CV Indo Daha Export, a premier B2B Indonesian agricultural export trading company headquartered in Kediri City, East Java, Indonesia.
 
