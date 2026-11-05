@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: CV Indo Daha Export - AI Chat Desk API
+  description: >
+    Server-side API for CV Indo Daha Export's 24/7 AI Export Desk. Grounded in official
+    Indonesian shallot commodity specifications, reefer logistics protocols (Port of Tanjung Perak),
+    export quarantine documentation, and structured WhatsApp sales intent handoff.
+  version: 1.0.0
+  contact:
+    name: CV Indo Daha Export Trade Desk
+    url: https://indodahaexport.com
+servers:
+  - url: /
+    description: Current Environment
+
+paths:
+  /api/chat:
+    post:
+      summary: Send messages to the AI Export Desk
+      description: >
+        Receives an array of conversation messages, validates payload structure, verifies server-side
+        Gemini API configuration, queries Google Gemini generative language model with CV Indo Daha Export's
+        domain knowledge base, and returns an assistant response with optional WhatsApp action triggers.
+      operationId: sendChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            examples:
+              specInquiry:
+                summary: Technical reefer specification inquiry
+                value:
+                  messages:
+                    - role: user
+                      content: "What temperature and ventilation settings are required for fresh red shallots in reefer containers?"
+              quotationInquiry:
+                summary: Commercial proforma quote request
+                value:
+                  messages:
+                    - role: user
+                      content: "Can you provide a proforma quote for 1 x 40ft reefer container of Grade A Fresh Shallots to Jebel Ali Port, Dubai?"
+      responses:
+        '200':
+          description: Successful AI Export Desk response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+              examples:
+                quoteResponse:
+                  summary: Response containing dynamic WhatsApp action handoff tag
+                  value:
+                    reply: "We can supply 1 x 40ft High Cube Reefer container (~26 MT) of Fresh Raw Red Shallots (Grade A, 2.5-3.5+ cm) shipped from Port of Tanjung Perak, Surabaya. Shallot spot prices fluctuate weekly based on harvest yields and ocean bunker rates. To finalize your proforma quotation, please connect directly with our export desk on WhatsApp.\n\n[WHATSAPP_ACTION: Fresh Raw Red Shallots (Grade A) | 1x40ft Reefer (~26 MT) | Jebel Ali Port, Dubai]"
+        '400':
+          description: Bad request - Missing or malformed messages payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Invalid messages array provided. Must be a non-empty array."
+        '500':
+          description: Server configuration error (missing GEMINI_API_KEY) or upstream AI provider failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "GEMINI_API_KEY is not configured on the server. Please check your environment configuration."
+        '504':
+          description: Gateway timeout - Model request timed out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Request to AI export desk timed out after 20 seconds. Please try again or reach us via WhatsApp."
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+          description: Role of the message author
+          example: user
+        content:
+          type: string
+          description: Text message content
+          example: "What is your Minimum Order Quantity (MOQ) for crispy fried shallots?"
+
+    ChatRequest:
+      type: object
+      required:
+        - messages
+      properties:
+        messages:
+          type: array
+          description: Chronological list of user and assistant messages
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+
+    ChatResponse:
+      type: object
+      required:
+        - reply
+      properties:
+        reply:
+          type: string
+          description: Assistant response text, which may contain an optional [WHATSAPP_ACTION: ...] structured tag
+          example: "Our Minimum Order Quantity (MOQ) for Crispy Fried Shallots (Bawang Goreng) is 500 kg for commercial packaging or 1 x 20ft container for private label OEM."
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error description
+          example: "Invalid messages array provided. Must be a non-empty array."
