@@ -52,19 +52,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Check Gemini API Key before proceeding
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return Response.json(
-        {
-          error:
-            "GEMINI_API_KEY is not configured on the server. Please check your environment configuration.",
-        },
-        { status: 500 }
-      );
-    }
-
-    const provider = getChatProvider({ apiKey });
+    const provider = getChatProvider();
     const reply = await provider.sendMessage(validMessages, SYSTEM_INSTRUCTION);
 
     return Response.json({ reply }, { status: 200 });
